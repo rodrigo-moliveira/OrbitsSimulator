@@ -5,8 +5,10 @@ from constants import Earth
 from .animate import AnimatedSimulation2D
 
 
-def centralForceProblem(a,e,t_end,dt,orbiter,central,ν0=0):
-    orbit = Orbit2D(a,e,ν0,Earth)
+def twoBodyProblem(t_end,dt,orbiter,central):
+    
+    # center of mass orbit
+    CM = Orbit2D(a,e,ν0,Earth)
 
     t = 0
     trajectory_orbiter = []

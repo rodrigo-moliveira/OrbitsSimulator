@@ -8,7 +8,7 @@ class Orbit2D:
     def __init__(self,a,e,ν0=0,central=Earth):
         if e >= 1 or e < 0 :
             raise Exception("The eccentricity (e) should be in the range [0,1) (elliptical orbits only)")
-        if a*(1-e) < central.r :
+        if (a*(1-e)) < central.r :
             raise Exception("The semi-major axis at periaxis is smaller than the central body's radius (Collision!).")
         self.a = a                                   #semi-major axis [m]
         self.e = e                                   #eccentricity []
@@ -25,7 +25,7 @@ class Orbit2D:
     def getXYcoordinates(self):
         # get polar coordinates
         ν = self._M2ν(self.M)
-        r = (self.a * (1 - self.e)**2) / (1 + self.e * cos(ν))
+        r = (self.a * (1 - self.e**2)) / (1 + self.e * cos(ν))
 
         # get x,y coordinates
         x = r * cos(ν)
