@@ -19,14 +19,12 @@ G = 6.6740831e-11
 class Body:
     """Generic class for the description of physical characteristics of celestial body"""
 
-    def __init__(self, name, mass, equatorial_radius, **kwargs):
+    def __init__(self, name, mass, **kwargs):
         self.name = name
         """Name of the celestial body"""
         self.mass = mass
         """Mass of the celestial body"""
-        self.equatorial_radius = equatorial_radius
-        """Equatorial radius of the celestial body"""
-
+        
         for k, v in kwargs.items():
             setattr(self, k, v)
 

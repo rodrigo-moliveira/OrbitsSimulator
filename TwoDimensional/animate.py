@@ -4,7 +4,7 @@ import numpy as np
 
 
 class AnimatedSimulation2D(object):
-    def __init__(self, time_vector, particlesList,speed = 1,forever = True,dim = 1,show_trajectory = True):
+    def __init__(self, time_vector, particlesList,speed = 20,forever = True,dim = 1,show_trajectory = True):
         """
         time_vector - list with time steps of simulation
         particlesList - list with particles to plot
@@ -21,6 +21,7 @@ class AnimatedSimulation2D(object):
         self.dim = dim
         self.show_trajectory = show_trajectory
 
+
         # Setup the figure and axes...
         self.fig, self.ax = plt.subplots()
         plt.axis('scaled')
@@ -32,12 +33,13 @@ class AnimatedSimulation2D(object):
     def setup_plot(self):
         """Initial drawing of the scatter plot."""
         point = next(self.stream)
+        self.scats = []
 
         # moving particles
         for particle in point[1:]:
             xy = particle[0]
             c = particle[2]
-            self.scat = self.ax.scatter(xy[0], xy[1] ,c=c)
+            self.scats.append(self.ax.scatter(xy[0], xy[1] ,c=c))
 
         # static particles
         for particle in self.particlesList:
@@ -52,11 +54,11 @@ class AnimatedSimulation2D(object):
                 traj = particle.trajectory
                 x = [j[0] for j in traj]
                 y = [j[1] for j in traj]
-                plt.plot(x,y,linestyle='dashed',color="grey")
+                plt.plot(x,y,linestyle='dashed',color="grey",linewidth=1)
 
         self.ax.axis([-self.dim, self.dim, -self.dim, self.dim])
 
-        return self.scat,
+        return self.scats
 
     def data_stream(self):
         """Generate trajectories data streams."""
@@ -86,13 +88,14 @@ class AnimatedSimulation2D(object):
         """Update the scatter plot."""
         point = next(self.stream)
 
+        i = 0
         for particle in point[1:]:
             xy = particle[0]
             c = particle[2]
-            self.scat = self.ax.scatter(xy[0], xy[1] ,c=c)
+            self.scats[i] = self.ax.scatter(xy[0], xy[1] ,c=c)
+            i+=1
 
-
-        return self.scat,
+        return self.scats
 
     def show(self):
         plt.show()

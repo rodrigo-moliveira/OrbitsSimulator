@@ -6,7 +6,7 @@ from .animate import AnimatedSimulation2D
 
 
 def centralForceProblem(a,e,t_end,dt,orbiter,central,ν0=0):
-    orbit = Orbit2D(a,e,ν0,Earth)
+    orbit = Orbit2D(a,e,Earth,ν0)
 
     t = 0
     trajectory_orbiter = []

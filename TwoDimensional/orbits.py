@@ -5,11 +5,13 @@ from constants import Earth
 class Orbit2D:
     """used for 2D simulations of the two-body problem and central-force problem
     """
-    def __init__(self,a,e,ν0=0,central=Earth):
+    def __init__(self,a,e,central,ν0=0):
         if e >= 1 or e < 0 :
             raise Exception("The eccentricity (e) should be in the range [0,1) (elliptical orbits only)")
-        if (a*(1-e)) < central.r :
-            raise Exception("The semi-major axis at periaxis is smaller than the central body's radius (Collision!).")
+        if central is not None:
+            if (a*(1-e)) < central.r :
+                raise Exception("The semi-major axis at periaxis is smaller than the central body's radius (Collision!).")
+
         self.a = a                                   #semi-major axis [m]
         self.e = e                                   #eccentricity []
         self.M = self._νtoM(ν0 % (2*pi))             #true anomaly (ν) [rad]
@@ -40,7 +42,7 @@ class Orbit2D:
 
         #1. Conversion from Mean Anomaly (M) to Eccentric anomaly (E)
         #from Vallado
-        tol = 1e-8
+        tol = 1e-9
 
         # Ellipse
         if -pi < M < 0 or M > pi:
@@ -55,7 +57,6 @@ class Orbit2D:
         while abs(E1 - E) >= tol:
             E = E1
             E1 = next_E(E, self.e, M)
-
 
         #2. Conversion from Eccentric anomaly E to true anomaly ν
         cos_ν = (cos(E1) - self.e) / (1 - self.e * cos(E1))
