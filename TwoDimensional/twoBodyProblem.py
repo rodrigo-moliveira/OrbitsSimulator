@@ -5,7 +5,6 @@ import constants
 from .animate import AnimatedSimulation2D
 
 # to simplify the problem (in terms of the order of magnitude of the axes), I make G = 1, m1 = 1
-constants.G = 1
 norm = np.linalg.norm
 m1 = 1
 

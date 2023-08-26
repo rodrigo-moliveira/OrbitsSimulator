@@ -1,36 +1,30 @@
 import numpy as np
 
 from .orbits import Orbit2D
-from constants import Earth
+from constants import Earth, Body
 from .animate import AnimatedSimulation2D
+from .state import State2D
 
 
-def centralForceProblem(a,e,t_end,dt,orbiter,central,ν0=0):
-    orbit = Orbit2D(a,e,Earth,ν0)
+def centralForceProblem(central_body: Body, orbiter_body: Body, t_end, dt):
+    orbit = Orbit2D(central_body, orbiter_body.initial_state)
 
     t = 0
-    trajectory_orbiter = []
-    trajectory_central = [0, 0] #xy coordinates of ellipse focus
-    time_vector = []
+    traj_body = []
+    time_vec = []
 
-    while(t < t_end):
+    while t < t_end:
         orbit.propagate(dt)
-        (x,y) = orbit.getXYcoordinates()
-        trajectory_orbiter.append([x,y])
-
+        orb = orbit.state.copy(form='cartesian')
+        traj_body.append(orb)
+        time_vec.append(t)
 
         t += dt
-        time_vector.append(t)
 
-    central.trajectory = trajectory_central
-    central.motion = "static"
-    central.color = 'blue'
-    orbiter.trajectory = trajectory_orbiter
-    orbiter.motion = "moving"
-    orbiter.color = 'black'
+    central_body.motion = 'static'
+    central_body.traj = [0, 0]
+    orbiter_body.motion = 'moving'
+    orbiter_body.traj = traj_body
 
-    _all = np.array(trajectory_orbiter).flatten()
-    dim = abs(max(_all.min(), _all.max(), key=abs)) * 1.5
-
-    animation = AnimatedSimulation2D(time_vector,(orbiter,central,),dim=dim)
+    animation = AnimatedSimulation2D(time_vec, [central_body, orbiter_body])
     animation.show()

@@ -34,8 +34,7 @@ class Body:
     def __getattr__(self, name):
         attrs = {
             "m": "mass",
-            "r": "equatorial_radius",
-            chr(956): "mu",
+            "r": "radius",
             "µ": "mu",
             "e": "eccentricity",
         }
@@ -63,5 +62,5 @@ class Body:
 Earth = Body(
     name="Earth",
     mass=5.97237e24,
-    equatorial_radius=6378136.3,
+    radius=6378136.3
 )
